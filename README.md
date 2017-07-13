@@ -18,6 +18,7 @@ Names which were given to more than 100 each of males and females are classed as
 * Apart from names, what else should be randomised? Jobs?
 * Gender's a complicated topic, so I'm very open to suggestions for improvements in the way it's handled.
 * Other languages!
+* A function which populates the scope with variables for the pronouns, and verb conjugation, so you don't have to set them up yourself in each question. Or maybe functions like `they(person)`, equivalent to `person['pronouns']['they']`.
 
 ## Copyright
 
@@ -43,7 +44,31 @@ The code returns dictionaries representing people, of the form
 }
 ```
 
+## How to use this
+
+Generate a random person, or people, using the JME functions described below.. Each time you need to use their name, or a pronoun referring to them, use the corresponding entry from their dictionary, as described above.
+
+Here's an example:
+
+```
+{person['name']} puts {person['pronouns']['their']} things where {person['pronouns']['they']} like{if(person['gender']='neutral','','s')}.
+
+When people show things to {person['pronouns']['them']}, {person['pronouns']['they']} want{if(person['gender']='neutral','','s')} them for {person['pronouns']['themself']}.
+```
+
 The singular "they" is used for gender-neutral people. Don't forget that verb conjugation is different for singular "they": for example, "Charlie likes to read while they walk" compared to "Charlie likes to read while he walks".
+
+If you've only got one person, it can be more convenient to set variables for 'they', 'their', etc. and for verb conjugation, so you don't have to type `person['pronouns']['their']` each time.
+
+Here's that example again:
+
+```
+{name} put{s} {their} things where {they} like{s}.
+
+When people show things to {them}, {they} want{s} them for {themself}.
+```
+
+If you need more than one person, use `random_people` to ensure that you don't have any repeated names, which could lead to confusion.
 
 ## JME functions
 
