@@ -2,6 +2,8 @@
 
 A [Numbas](http://www.numbas.org.uk) extension providing a collection of functions to generate random people, for use in word problems.
 
+**Demo: https://numbas.mathcentre.ac.uk/question/23094/the-random-person-extension/**
+
 It doesn't really matter what people are called in word problems, but it can have a bad effect on students' perceptions of the world if the plumber's always called Gary and the nurse is always called Julie.
 
 An easy fix is to flip a coin each time you need a name, and choose a male name if it's heads, and a female name if it's tails.
