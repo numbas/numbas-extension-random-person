@@ -17,6 +17,7 @@ Names which were given to more than 100 each of males and females are classed as
 * The dataset from England and Wales is baked-in to the extension at the moment. It would be good to add an option to provide your own data.
 * Apart from names, what else should be randomised? Jobs?
 * Gender's a complicated topic, so I'm very open to suggestions for improvements in the way it's handled.
+* Other languages!
 
 ## Copyright
 
