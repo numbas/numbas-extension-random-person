@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="../../tests/jme-runtime.js"></script>
+        <script src="../../tests/locales.js"></script>
+        <script src="random_person.js"></script>
+        <style>
+            .log {
+                font-family: monospace;
+            }
+            .log.error {
+                color: red;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <ul id="tests"></ul>
+
+        <script>
+
+            var tests_ul = document.getElementById('tests');
+            function show(name,value) {
+                tests_ul.innerHTML += `
+                <li>${name}: <code>${JSON.stringify(value)}</code></li>
+                `;
+            }
+            function desc(message) {
+                tests_ul.innerHTML += `<li><strong>${message}</strong></li>`;
+            }
+
+			Numbas.queueScript('base',[],function() {});
+			Numbas.queueScript('go',['jme','localisation','extensions/random_person/random_person.js'],function() {
+                Numbas.activateExtension('random_person');
+                var s = window.scope = new Numbas.jme.Scope([Numbas.jme.builtinScope,Numbas.extensions.random_person.scope]);
+                var ext = Numbas.extensions.random_person;
+                window.data = ext.data;
+
+                function run(expr) {
+                    show('<code>'+expr+'</code>',Numbas.jme.unwrapValue(scope.evaluate(expr)));
+                }
+
+                run('random_person()');
+                run('random_person_with_gender("male")');
+                run('random_person_with_gender("female")');
+
+                run('random_person_with_initial("A")');
+                run('map(x["name"],x,random_people(5))');
+
+                run('map(x["name"],x,random_people_with_different_initials(5))');
+
+                desc("Using the French dataset");
+                ext.data = ext.datasets.fr;
+                run('map(x["name"],x,random_people(15))');
+
+                desc("Using the USA dataset");
+                ext.data = ext.datasets.us;
+                run('map(x["name"],x,random_people(15))');
+            });
+        </script>
+    </body>
+</html>
+

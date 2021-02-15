@@ -13,6 +13,46 @@ But names come with much more baggage than gender! Social class, age and cultura
 So, this extension makes it really easy to randomly pick a name for a representative citizen of England and Wales born between 1996 and 2015, using the ONS's dataset of baby name frequencies in England and Wales, 1996 to 2015.
 
 Names which were given to more than 100 each of males and females are classed as gender-neutral.
+Additionally, when picking names without specifiying a gender, occasionally a name that would be returned as "male" or "female" is instead returned as "neutral", representing a person who identified as non-binary.
+The proportion of the time that this happens is controlled by the JavaScript variable `Numbas.extensions.random_person.PROB_NONBINARY`, which is 1/100 by default.
+
+## Providing your own name data
+
+The extension contains some built-in JavaScript objects with the data for name frequencies, and pronouns associated with each gender.
+You can replace these objects with your own data.
+
+There are some other datasets in `Numbas.extensions.random_person.datasets`.
+
+To switch to another dataset, put something like this in your question's Javascript preamble:
+
+```
+var random_person = Numbas.extensions.random_person;
+random_person.data = random_person.datasets.fr;
+```
+
+The name frequencies are stored in an object at `Numbas.extensions.random_person.data`.
+
+This object has the form:
+
+```
+{
+    "names": { gender: list of objects {"name": string, "count": integer} },
+    "totals": { gender: integer }
+}
+```
+
+(`gender` stands for a key representing each gender. In the built-in data set, these are `"male"`, `"female"` and `"neutral"`.)
+
+There is also an object giving pronouns for each gender, stored at `Numbas.extensions.random_person.pronouns`.
+
+This object has the form:
+
+```
+{ gender: pronoun_map }
+```
+
+The built-in `pronoun_map` is an object mapping each of the strings `"they"`, `"their"`, `"theirs"`, `"them"`, `"themself"` to the corresponding pronouns for that gender.
+Each of these keys is added to the object returned for a randomly-generated person, so if you are using a language other than English, you could provide a different set of keys.
 
 ## Ways this can be improved
 
@@ -89,3 +129,11 @@ A person with random name and the given gender.
 ### `random_people_with_gender(gender,n)`
 
 `n` unique people with random names and the given gender.
+
+### `random_person_with_initial(letter)`
+
+A person with random name and gender, whose name starts with the given letter.
+
+### `random_people_with_different_initials(n)`
+
+`n` unique people with random names, whose names each start with distinct letters.
