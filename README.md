@@ -56,10 +56,8 @@ Each of these keys is added to the object returned for a randomly-generated pers
 
 ## Ways this can be improved
 
-* The dataset from England and Wales is baked-in to the extension at the moment. It would be good to add an option to provide your own data.
 * Apart from names, what else should be randomised? Jobs?
 * Gender's a complicated topic, so I'm very open to suggestions for improvements in the way it's handled.
-* Other languages!
 * A function which populates the scope with variables for the pronouns, and verb conjugation, so you don't have to set them up yourself in each question. Or maybe functions like `they(person)`, equivalent to `person['pronouns']['they']`.
 
 ## Copyright
