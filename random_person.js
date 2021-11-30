@@ -4,11 +4,11 @@
       /** Find count for a key in a counted reduce_prefix_map
        *
        */
-      function find_count(map, key) {
-        if (Object.keys(map[key]).length === 0) {
-          return map[key];
+      function find_count(map) {
+        if (Object.keys(map).length === 0) {
+          return map;
         } else {
-          return map[key]["#"];
+          return map["#"];
         }
       }
 
@@ -24,14 +24,14 @@
         for (key_index in keys) {
           var key = keys[key_index];
           if (key !== "#") {
-            t += find_count(map, key);
+            t += find_count(map[key]);
           }
-          if (t >= r) {
+          if (t >= i) {
             if (Object.keys(map[key]) === 0) {
               // Found
               return state;
             }
-            return find_at_index(map[key], t - r, state + key);
+            return find_at_index(map[key], t - i, state + key);
           }
         }
       }
@@ -42,7 +42,11 @@
       function start_with_initial(map, initial) {
         let new_map = {};
         let count = 0;
-        for (key_index in keys) {
+        var keys = Object.keys(map);
+        if (keys.length === 0) {
+          return;
+        }
+        for (var key_index = 0; key_index < keys.length; key_index++) {
           var key = keys[key_index];
           if (key.slice(0, initial.length) == initial.slice(0, key.length)) {
             if (key.length >= initial.length) {
@@ -57,33 +61,40 @@
           }
         }
         new_map["#"] = count;
+        return new_map;
       }
 
       /** Change a reduced prefix map so it becomes a counted reduced prefix map
        * It contains an extra field "#" in each map that has to total number usages of names in the node (including subnodes)
        * The top level contains an "#" field with the total number of occurrences
        */
-      var count_reduced_prefix_map = function (map) {
+      function count_reduced_prefix_map(map) {
         var keys = Object.keys(map);
         if (keys.length === 0) {
           return;
         }
-        for (var key_index in keys) {
+        for (var key_index = 0; key_index < keys.length; key_index++) {
           var key = keys[key_index];
           count_reduced_prefix_map(map[key]);
         }
         var count = 0;
-        for (var key_index in keys) {
+        for (var key_index = 0; key_index < keys.length; key_index++) {
           var key = keys[key_index];
-          count += find_count(map, key);
+          count += find_count(map[key]);
         }
         map["#"] = count;
-      };
+      }
 
       for (var x in datasets) {
         datasets[x] = JSON.parse(LZString.decompressFromBase64(datasets[x]));
-        for (var gender in datasets[x]["names"]) {
-          count_reduced_prefix_map(datasets[x]["names"][gender]);
+        var genders = Object.keys(datasets[x].names);
+        for (
+          var gender_index = 0;
+          gender_index < genders.length;
+          gender_index++
+        ) {
+          var gender = genders[gender_index];
+          count_reduced_prefix_map(datasets[x].names[gender]);
         }
       }
 
@@ -242,15 +253,16 @@
           var t = 0;
           var names = data.names[gender];
           var i = math.randomint(find_count(names));
-          return name_info(find_at_index(names, i), gender);
+          var name = find_at_index(names, i);
+          return name_info(name, gender);
         });
 
-      function maybe_nonbinary(name, data) {
+      function maybe_nonbinary(person, data) {
         if (
           data.totals["neutral"] > 0 &&
           Math.random() < extension.PROB_NONBINARY
         ) {
-          person = name_info(name, "neutral");
+          person = name_info(person.name, "neutral");
         }
         return person;
       }
@@ -325,8 +337,9 @@
           }
 
           var people = [];
-          var possible_initials = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-          math.shuffle(possible_initials);
+          var possible_initials = math.shuffle(
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("")
+          );
           while (people.length < n && possible_initials.length > 0) {
             let initial = possible_initials.pop();
             let person = random_person_with_initial(initial);

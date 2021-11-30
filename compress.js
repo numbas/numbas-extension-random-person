@@ -98,11 +98,11 @@ const reduce_prefix_map = (map) => {
 /** Find count for a key in a counted reduce_prefix_map
  *
  */
-function find_count(map, key) {
-  if (Object.keys(map[key]).length === 0) {
-    return map[key];
+function find_count(map) {
+  if (Object.keys(map).length === 0) {
+    return map;
   } else {
-    return map[key]["#"];
+    return map["#"];
   }
 }
 
@@ -110,22 +110,22 @@ function find_count(map, key) {
  * It contains an extra field "#" in each map that has to total number usages of names in the node (including subnodes)
  * The top level contains an "#" field with the total number of occurrences
  */
-var count_reduced_prefix_map = function (map) {
+function count_reduced_prefix_map(map) {
   var keys = Object.keys(map);
   if (keys.length === 0) {
     return;
   }
-  for (var key_index in keys) {
+  for (var key_index = 0; key_index < keys.length; key_index++) {
     var key = keys[key_index];
     count_reduced_prefix_map(map[key]);
   }
   var count = 0;
-  for (var key_index in keys) {
+  for (var key_index = 0; key_index < keys.length; key_index++) {
     var key = keys[key_index];
-    count += find_count(map, key);
+    count += find_count(map[key]);
   }
   map["#"] = count;
-};
+}
 
 fs.readFile(infile, { encoding: "utf-8" }, (err, data) => {
   let comp = JSON.stringify(calculate_prefix_maps(JSON.parse(data)));
