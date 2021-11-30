@@ -167,34 +167,6 @@
           return out;
         });
 
-      /** A random partition of n into k piles.
-       */ // TODO not used?  remove?
-      var partition_into_k = (extension.partition_into_k = function (n, k) {
-        var a = [];
-        var ta = 0;
-        for (var i = 0; i < k; i++) {
-          var x = Math.random();
-          ta += x;
-          a.push(x);
-        }
-        var tf = 0;
-        a = a.map(function (x) {
-          x = Math.round((n * x) / ta);
-          tf += x;
-          return x;
-        });
-        var diff = Math.abs(tf - n);
-        var d = tf > n ? -1 : 1;
-        for (var j = 0; j < diff; j++) {
-          i = -1;
-          while (i == -1 || a[i] == 0) {
-            var i = math.randomint(k);
-          }
-          a[i] += d;
-        }
-        return a;
-      });
-
       /** Choose a key at random from a dictionary mapping keys to weights
        */
       function weighted_choose(options) {
