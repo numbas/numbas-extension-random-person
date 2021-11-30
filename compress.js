@@ -75,7 +75,7 @@ const reduce_prefix_map = (map) => {
 };
 
 fs.readFile(infile, { encoding: "utf-8" }, (err, data) => {
-  //const comp = LZString.compressToUTF16(data);
-  const comp = JSON.stringify(calculate_prefix_maps(JSON.parse(data)));
+  let comp = JSON.stringify(calculate_prefix_maps(JSON.parse(data)));
+  comp = LZString.compressToBase64(comp);
   fs.writeFile(outfile, comp, { encoding: "utf-8" }, (err) => {});
 });
