@@ -11,4 +11,4 @@ for p in Path('compressed').iterdir():
             datasets[p.stem] = f.read()
 
 with open('data.js','w') as f:
-    f.write('var datasets = '+json.dumps(datasets,ensure_ascii=False)+';')
+    f.write('var datasets = '+json.dumps(datasets)+';')
