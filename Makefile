@@ -1,8 +1,8 @@
 DATASETS=$(wildcard datasets/*.json)
 COMPRESSED=$(patsubst datasets/%, compressed/%, $(DATASETS))
 
-data.js: $(COMPRESSED)
-	python collect_datasets.py
+lib/random_person.js: random_person.js $(COMPRESSED)
+	python create_extension_file.py
 
 compressed/%.json: datasets/%.json
 	node compress.js $< $@
