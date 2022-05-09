@@ -1,4 +1,4 @@
-(function() {
+{% raw %}(function() {
 
 function go() {
 Numbas.addExtension('random_person',['math'], function(extension) {
@@ -325,8 +325,8 @@ Numbas.addExtension('random_person',['math'], function(extension) {
      *  Downloaded from https://www.insee.fr/fr/statistiques/2540004?sommaire=4767262
      */
     // prettier-ignore
-    {{datasets}}
+    {% endraw %}var datasets = {{datasets}};{% raw %}
 
 
 go();
-})();
+})();{% endraw %}
