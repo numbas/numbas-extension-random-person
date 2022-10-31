@@ -22,7 +22,7 @@ Numbas.addExtension("random_person", ["math"], function (extension) {
         if (keys.length === 0) {
             return state;
         }
-        for (key_index in keys) {
+        for (var key_index in keys) {
             var key = keys[key_index];
             if (key !== "#") {
                 t += find_count(map[key]);
